@@ -1,192 +1,9 @@
+var commonCurrency;
 (function () {
   let result = new URLSearchParams(window.location.search);
   let source = result.get('source');
-  // 不同国家钱符号
-  let currencyList = {
-    "AED": ".د.ب",
-    "ALL": "lek",
-    "AOA": "Kz",
-    "ARS": "$",
-    "AUD": "$",
-    "AWG": "ƒ",
-    "AZN": "ман",
-    "BAM": "KM",
-    "BBD": "$",
-    "BDT": "Tk",
-    "BGN": "лв",
-    "BHD": ".د.ب or BD",
-    "BMD": "$",
-    "BND": "$",
-    "BOB": "$b",
-    "BRL": "R$",
-    "BSD": "B$",
-    "BTN": "Nu.",
-    "BWP": "P",
-    "BYN": "р",
-    "BZD": "BZ$",
-    "CAD": "$",
-    "CHF": "CHF",
-    "CLP": "$",
-    "CNY": "¥",
-    "COP": "$",
-    "CRC": "₡",
-    "CUC": "$",
-    "CUP": "₱",
-    "CVE": "$",
-    "CZK": "Kč",
-    "DJF": "fdj",
-    "DKK": "kr",
-    "DOP": "$",
-    "DZD": "جد",
-    "EGP": "£ ",
-    "ERN": "ናቕፋ",
-    "ETB": "Br",
-    "EUR": "€",
-    "FJD": "$",
-    "FKP": "£",
-    "GBP": "£",
-    "GEL": "ლ",
-    "GHS": "GH¢",
-    "GIP": "£",
-    "GTQ": "Q",
-    "GYD": "$",
-    "HKD": "HK$",
-    "HNL": "L",
-    "HRK": "kn",
-    "HTG": "G",
-    "HUF": "Ft",
-    "IDR": "Rp",
-    "ILS": "₪",
-    "INR": "₹",
-    "IQD": "ع.د",
-    "ISK": "kr",
-    "JMD": "J$",
-    "JPY": "¥",
-    "KES": "KSh",
-    "KGS": "лв",
-    "KHR": "៛",
-    "KPW": "₩",
-    "KRW": "₩",
-    "KWD": "ك",
-    "KYD": "$",
-    "KZT": "₸",
-    "LAK": "₭",
-    "LBP": "ل.ل",
-    "LKR": "Rs",
-    "LRD": "$",
-    "LSL": "L or M",
-    "LTL": "Lt",
-    "LYD": " د.ل",
-    "MAD": "م.د.",
-    "MDL": "L",
-    "MGA": "Ar",
-    "MKD": "ден",
-    "MMK": "K",
-    "MNT": "₮",
-    "MOP": "MOP$",
-    "MRO": "UM",
-    "MUR": "Rs",
-    "MVR": "rf",
-    "MWK": "MK",
-    "MXN": "$",
-    "MYR": "RM",
-    "MZN": "MT",
-    "NAD": "$",
-    "NGN": "₦",
-    "NIO": "C$",
-    "NOK": "kr",
-    "NPR": "Rs",
-    "NZD": "$",
-    "OMR": "ع.ر.",
-    "PAB": "B/",
-    "PEN": "S/",
-    "PGK": "K",
-    "PHP": "₱",
-    "PKR": "Rs",
-    "PLN": "zł",
-    "QAR": "ق.ر ",
-    "RON": "lei",
-    "RSD": "РСД",
-    "RUB": "₽",
-    "RWF": "FRw, RF, R₣",
-    "SAR": "SR",
-    "SBD": "SI$",
-    "SCR": "Rs",
-    "SEK": "kr",
-    "SGD": "$",
-    "SLL": "Le",
-    "SOS": "S",
-    "SRD": "$",
-    "SYP": "£",
-    "SZL": "L or E",
-    "THB": "฿",
-    "TMT": "T",
-    "TOP": "T$",
-    "TRY": "₺",
-    "TTD": "TT$",
-    "TWD": "NT$",
-    "TZS": "Sh",
-    "UAH": "₴",
-    "UGX": "USh",
-    "USD": "$",
-    "UYU": "$U",
-    "UZS": "лв",
-    "VEF": "Bs",
-    "VND": "₫",
-    "VUV": "VT",
-    "WST": "$",
-    "XCD": "EC$",
-    "ZAR": "R",
-    "ZMW": "ZMK"
-  }
-  // 不同国家语言文字
-  let languageData = {
-    RON: {
-      lType: 'RON',
-      buyBtnText: 'Cumpărați cu Ramburs la Livrare',
-      layoutStyle: 'initial',
-      popUpHeader: 'Comanda cu Ramburs la Livrare',
-      deliveryText: 'Metodă de livrare',
-      freeTranText: 'Transport gratuit',
-      freeText: 'Gratuit',
-      addressText: 'Introdu adresa ta de livrare',
-      fullNameText: 'Numele complet',
-      errorText: 'Acest câmp este obligatoriu.',
-      teleText: 'Telefon',
-      exactText: 'Adresa exacta',
-      exactPleText: 'ex: Strada, numar, bloc, scara, etaj, apartament',
-      buildText: 'Numărul casei',
-      countyText: 'Județ',
-      townText: 'Oraș',
-      postalText: 'Cod postal',
-      emailText: 'E-mail',
-      orderBtn: 'Finalizați achiziția',
-      orderError: 'Order failure',
-    },
-    SAR: {
-      lType: 'SAR',
-      buyBtnText: 'اشتر الآن（الدفع عند الاستلام ）',
-      layoutStyle: 'rtl',
-      popUpHeader: "الطلب نقدًا عند التسليم",
-      deliveryText: 'طريقة التوصيل',
-      freeTranText: 'النقل مجاني',
-      freeText: 'حر',
-      addressText: 'أدخل عنوان التسليم الخاص بك',
-      fullNameText: 'الاسم الكامل',
-      errorText: 'هذه الخانة مطلوبه.',
-      teleText: 'هاتف',
-      exactText: 'العنوان التفصيلي',
-      exactPleText: '3القطعة/الشارع/المنزل: قطعة 5 شارع 2منزل',
-      buildText: 'رقم الدار',
-      countyText: 'المحافظة',
-      townText: 'المدينة',
-      postalText: 'الرمز البريدي',
-      emailText: 'بريد إلكتروني',
-      orderBtn: 'أكمل عملية الشراء',
-      orderError: 'فشل الطلب',
-    }
-  }
   let currencyValue = Shopify?.currency?.active
+  commonCurrency = currencyList[currencyValue] ? currencyList[currencyValue] : currencyValue
   let LText = languageData[currencyValue] || languageData.RON
 
   let xhr = new window.XMLHttpRequest();
@@ -213,6 +30,10 @@
 
   // 添加下单弹窗
   function clickBuyBtn() {
+    // 变体数据
+    let variantRadios = document.getElementsByTagName('variant-radios')[0]
+    let variantData = JSON.parse(variantRadios.querySelector('[type="application/json"]').textContent) || [];
+
     if (buyBtn.className.indexOf('loading_btn') > 0 || buyBottomBtn.className.indexOf('loading_btn') > 0) {
       return false
     }
@@ -231,14 +52,13 @@
     } else {
       let result = new URLSearchParams(window.location.search);
       let variant = result.get('variant');
-      let shopData = meta.product
       let variant_id = ''
       // 产品详情页
       if (window.location.pathname.indexOf('/products/') > -1) {
         if (variant) {
           variant_id = variant
         } else {
-          variant_id = shopData.variants[0].id
+          variant_id = variantData.filter(i => i.available)[0].id
         }
       } else {
         // 首页热销品
@@ -249,10 +69,16 @@
         }
       }
       if (variant_id) {
+        let isAvailable = variantData.find(i => i.id == variant_id)?.available
+        if (!isAvailable) {
+          // timer('售空')
+          closeLoading('1')
+          return
+        }
         let quantityNum = document.querySelector('.quantity__input')?.value || '1'
         Promise.all([clearCart(variant_id, quantityNum)]).then(res => {
           let [data] = res;
-          if(data && data.items && data.items.length > 0){
+          if (data && data.items && data.items.length > 0) {
             data.items = data.items.filter(i => i.id == variant_id)
           }
           getProductList(data)
@@ -274,7 +100,9 @@
     } else {
       dom.querySelector('.cod_loading_icon').style.display = 'none'
     }
-    document.querySelector('.pop_up_checkout_btn').className = 'pop_up_checkout_btn'
+    if (document.querySelector('.pop_up_checkout_btn')) {
+      document.querySelector('.pop_up_checkout_btn').className = 'pop_up_checkout_btn'
+    }
   }
 
   // 获取产品数据列表
@@ -291,8 +119,8 @@
           variant_id: item.variant_id,
           variant_title: item.variant_title,
           price: parseFloat(item.final_line_price / 100),
-          unit: currencyList[data.currency] ? currencyList[data.currency] : data.currency,
-          total_price: parseFloat(data.total_price / 100),
+          // unit: commonCurrency,
+          // total_price: parseFloat(data.total_price / 100),
         })
       })
       createPopUp(data.item_count)
@@ -305,15 +133,15 @@
     let productDiv = ''
     productList.forEach(item => {
       productDiv += `<div class="pop_up_product_li">
-      <div class="product_img"><img src="${item.img}" /><div class="product_count">${item_count}</div></div>
+      <div class="product_img"><img src="${item.img}" /><div class="product_count">${item.quantity}</div></div>
       <div class="product_info">
         <a class="product_info_title" href="${item.href}">${item.title}</a>
         <span class="product_info_variant_name">${item.variant_title}</span>
       </div>
-      <div class="product_price">${item.price} ${item.unit}</div>
+      <div class="product_price">${item.price} ${commonCurrency}</div>
     </div>`
     })
-    let total = productList[0].total_price ? productList[0].total_price + ' ' + productList[0].unit : productList[0].price
+    let total = productList[0].total_price ? productList[0].total_price + ' ' + commonCurrency : productList[0].price + ' ' + commonCurrency
     // <img id='pop_up_close' class="pop_up_close" src="https://platform.antdiy.vip/static/image/close.svg" />
     codPopUp.innerHTML = `<div class="cod_pop_up" id="cod_pop_up" style="direction: ${LText.layoutStyle};">
       <div class="pop_up_box">
@@ -373,7 +201,7 @@
               <span>${LText.teleText}</span>
               <i>*</i>
             </div>
-            <input id="cod_phone" type="number" placeholder="${LText.teleText}">
+            <input id="cod_phone" type="text" placeholder="${LText.teleText}">
             <div id="phone_error" class="error_text">${LText.errorText}</div>
           </div>
           <div class="pop_up_from_item">
@@ -413,7 +241,7 @@
               <span>${LText.postalText}</span>
               <i></i>
             </div>
-            <input id="cod_postcode" type="number" placeholder="${LText.postalText}">
+            <input id="cod_postcode" type="text" placeholder="${LText.postalText}">
           </div>
           <div class="pop_up_from_item">
             <div class="item_title">
@@ -421,13 +249,10 @@
               <i></i>
             </div>
             <input id="cod_email" type="text" placeholder="${LText.emailText}">
+            <div id="email_error" class="error_text">${LText.emailError}</div>
           </div>
         </div>
-        <div class="pop_up_checkout_btn" id="pop_up_checkout_btn">${LText.orderBtn} - ${total}
-          <div class="cod_loading_icon">
-            <img src="https://platform.antdiy.vip/static/image/hydrogen_loading.gif" />
-          </div>
-        </div>
+        <div class="pop_up_checkout_btn" id="pop_up_checkout_btn">${LText.orderBtn} - ${total}<div class="cod_loading_icon"><img src="https://platform.antdiy.vip/static/image/hydrogen_loading.gif" /></div></div>
       </div>
     </div>`
     document.body.appendChild(codPopUp)
@@ -442,10 +267,10 @@
     let codPostCode = document.querySelector(`#cod_postcode`)
     let codPhone = document.querySelector(`#cod_phone`)
     const regex = /[^0-9]/g;
-    codPostCode.addEventListener('input', function(event) {
+    codPostCode.addEventListener('input', function (event) {
       codPostCode.value = codPostCode.value.replace(regex, '');
     });
-    codPhone.addEventListener('input', function(event) {
+    codPhone.addEventListener('input', function (event) {
       codPhone.value = codPhone.value.replace(regex, '');
     });
 
@@ -465,13 +290,14 @@
         count: 1,
         shop: Shopify.shop,
         country: Shopify.country,
+        country_code: 'RON',
         name: document.getElementById('cod_name').value,
         phone: document.getElementById('cod_phone').value,
         area: document.getElementById('cod_area').value,
         state: document.getElementById('cod_state').value,
         city: document.getElementById('cod_city').value,
         postcode: document.getElementById('cod_postcode').value,
-        email: document.getElementById('cod_email').value,
+        email: document.getElementById('cod_email').value.replace(/^\s*|\s*$/g, ''),
       }
       if (LText.lType === 'RON') {
         params.house_number = document.getElementById('cod_house_number').value
@@ -480,42 +306,67 @@
 
       for (let key in params) {
         if (key != 'postcode' && key != 'email' && !params[key]) {
-          let errorBox = document.getElementById(`${key}_error`)
-          let errorInp = document.getElementById(`cod_${key}`)
-          if (errorBox) {
-            errorBox.style.display = 'block'
-          }
-          if (errorInp) {
-            errorInp.className = 'cod_error'
-            errorInp.addEventListener('input', function () {
-              errorInp.className = ''
-              errorBox.style.display = 'none'
-            })
-          }
+          verifyForm(key)
           isPass = false
           closeLoading(checkoutBtn)
         }
       }
+      // if (params.phone && params.phone.length < 10){
+      //   verifyForm('phone', true)
+      //   isPass = false
+      //   closeLoading(checkoutBtn)
+      // }
       if (isPass) {
         let line_items = []
+        let product_list = []
         productList.forEach(item => {
           line_items.push({
             product_id: item.product_id,
             quantity: item.quantity,
             variant_id: item.variant_id,
           })
+          product_list.push({
+            img_url: item.img,
+            title: item.title,
+            variantTitle: item.variant_title,
+            price: item.price,
+            product_id: item.product_id,
+            quantity: item.quantity,
+            variant_id: item.variant_id,
+          })
         })
         params.line_items = line_items
+        params.product_list = product_list
         params.source = source
+        params.tags = LText.lType
+        params.route = 2
 
-        xhr.open("post", `https://gateway.antdiy.vip/account-service/media_orders/create/pass`);
+        xhr.open("post", `https://gateway.antdiy.vip/account-service/media_orders/create/async/pass`);
         xhr.setRequestHeader('Content-Type', 'application/json;charset=UTF-8');
         xhr.onreadystatechange = () => {
           if (xhr.readyState === 4) {
             if (xhr.response) {
               let res = JSON.parse(xhr.response)
-              if (res.success) {
-                window.open(res?.data?.detail?.order?.order_status_url, '_self')
+              if (res.success && res?.data?.order?.id) {
+                let contents = line_items.map(item => {
+                  return {
+                    id: item.variant_id,
+                    quantity: item.quantity,
+                  }
+                })
+                sendFbq(
+                  'Purchase',
+                  {
+                    content_type: 'product',
+                    contents: contents,
+                    value: product_list[0].price,
+                    currency: currencyValue,
+                  },
+                  {
+                    eventID: (new Date).getTime() + ""
+                  }
+                )
+                window.open(`/pages/thank_you?id=${res?.data?.order?.id}`, '_self')
               } else {
                 timer(res.msg || LText.orderError)
               }
@@ -526,6 +377,27 @@
         xhr.send(JSON.stringify(params));
       }
     })
+  }
+
+  // 验证表单信息错误
+  function verifyForm(key, value) {
+    let errorBox = document.getElementById(`${key}_error`)
+    let errorInp = document.getElementById(`cod_${key}`)
+    if (errorBox) {
+      if (value) {
+        errorBox.innerHTML = LText.phoneErrorText
+      } else {
+        errorBox.innerHTML = LText.errorText
+      }
+      errorBox.style.display = 'block'
+    }
+    if (errorInp) {
+      errorInp.className = 'cod_error'
+      errorInp.addEventListener('input', function () {
+        errorInp.className = ''
+        errorBox.style.display = 'none'
+      })
+    }
   }
 
   // 定时错误弹窗
@@ -543,7 +415,7 @@
       }
     }, 800)
   }
-  
+
   // 获取购物车接口
   function getCart() {
     return new Promise(resolve => {
@@ -590,6 +462,7 @@
           let res = JSON.parse(xhr.response)
           resolve(res);
           cartCreat()
+          sendFbq('AddToCart')
         }
       }
       xhr.send(JSON.stringify({ updates: obj }));
@@ -622,7 +495,6 @@
       }
     });
   }
-
   // 加购记录
   if (getReferer() && getReferer().split('.com')[0].indexOf(window.location.host.split('.com')[0]) === -1 && (!localStorage.getItem('refererName') || (localStorage.getItem('refererName') && localStorage.getItem('refererName') !== getReferer()))) {
     localStorage.setItem('refererName', getReferer())
@@ -650,6 +522,13 @@
       return document.referrer;
     } else {
       return false;
+    }
+  }
+
+  // FBQ
+  function sendFbq(a, b, c) {
+    if ("function" == typeof window.fbq) {
+      window.fbq("track", a, b, c)
     }
   }
 }())

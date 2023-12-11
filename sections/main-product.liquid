@@ -1,6 +1,6 @@
 <section
   id="MainProduct-{{ section.id }}"
-  class="page-width section-{{ section.id }}-padding"
+  class="section-{{ section.id }}-padding"
   data-section="{{ section.id }}"
 >
   {{ 'section-main-product.css' | asset_url | stylesheet_tag }}
@@ -12,7 +12,7 @@
   {{ 'component-loading-overlay.css' | asset_url | stylesheet_tag }}
   {{ 'component-deferred-media.css' | asset_url | stylesheet_tag }}
 
-  {%- style -%}
+  {% comment %} {%- style -%}
     .section-{{ section.id }}-padding {
       padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
       padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
@@ -24,7 +24,7 @@
         padding-bottom: {{ section.settings.padding_bottom }}px;
       }
     }
-  {%- endstyle -%}
+  {%- endstyle -%} {% endcomment %}
 
   <script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
   <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
@@ -223,7 +223,7 @@
                         </svg>
                       </span>
                     </span>
-                    <span>({{- 'products.product.quantity.in_cart_html' | t: quantity: cart_qty -}})</span>
+                    {% comment %} <span>({{- 'products.product.quantity.in_cart_html' | t: quantity: cart_qty -}})</span> {% endcomment %}
                   </span>
                 </label>
                 <quantity-input class="quantity">
@@ -302,11 +302,11 @@
                 {{- block.settings.text -}}
               </a>
             {%- when 'share' -%}
-              {% assign share_url = product.selected_variant.url | default: product.url | prepend: request.origin %}
+              {% comment %} {% assign share_url = product.selected_variant.url | default: product.url | prepend: request.origin %}
               {% render 'share-button',
                 block: block,
                 share_link: share_url
-              %}
+              %} {% endcomment %}
 
             {%- when 'variant_picker' -%}
               {% render 'product-variant-picker', product: product, block: block, product_form_id: product_form_id %}

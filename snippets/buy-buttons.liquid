@@ -53,7 +53,7 @@
               assign quantity_rule_soldout = true
             endif
           -%}
-          <button
+          {% comment %} <button
             id = "ProductSubmitButton-{{ section_id }}"
             type="submit"
             name="add"
@@ -83,8 +83,7 @@
           </button>
           {%- if block.settings.show_dynamic_checkout -%}
             {{ form | payment_button }}
-          {%- endif -%}
-          <!-- <div id="cod_buy">COD购买</div> -->
+          {%- endif -%} {% endcomment %}
         </div>
       {%- endform -%}
     </product-form>
@@ -144,4 +143,6 @@
   {%- endif -%}
   <button class="cod_bottom_button">{% render 'icon-cod-card' %}Cumpărați cu Ramburs la Livrare<div class="cod_loading_icon"><img src="https://platform.antdiy.vip/static/image/hydrogen_loading.gif" /></div></button>
 </div>
+{% comment %} <script src="{{ 'floatObj.js' | asset_url }}" defer="defer"></script> {% endcomment %}
 <script src="{{ 'pop-up.js' | asset_url }}" defer="defer"></script>
+{% comment %} <script src="{{ 'portfolioSelling.js' | asset_url }}" defer="defer"></script> {% endcomment %}

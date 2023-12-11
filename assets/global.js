@@ -843,6 +843,7 @@ class VariantSelects extends HTMLElement {
   }
 
   updateURL() {
+    // console.log(this.dataset)
     if (!this.currentVariant || this.dataset.updateUrl === 'false') return;
     window.history.replaceState({ }, '', `${this.dataset.url}?variant=${this.currentVariant.id}`);
   }
@@ -980,6 +981,7 @@ class VariantSelects extends HTMLElement {
   }
 
   getVariantData() {
+    // console.log(JSON.parse(this.querySelector('[type="application/json"]').textContent))
     this.variantData = this.variantData || JSON.parse(this.querySelector('[type="application/json"]').textContent);
     return this.variantData;
   }
@@ -1004,6 +1006,7 @@ class VariantRadios extends VariantSelects {
 
   updateOptions() {
     const fieldsets = Array.from(this.querySelectorAll('fieldset'));
+    // console.log(fieldsets)
     this.options = fieldsets.map((fieldset) => {
       return Array.from(fieldset.querySelectorAll('input')).find((radio) => radio.checked).value;
     });
@@ -1042,7 +1045,7 @@ class ProductRecommendations extends HTMLElement {
           }
         })
         .catch(e => {
-          console.error(e);
+          // console.error(e);
         });
     }
 

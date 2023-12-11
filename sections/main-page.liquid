@@ -19,13 +19,15 @@
 {%- endstyle -%}
 
 <div class="page-width page-width--narrow section-{{ section.id }}-padding">
-  <h1 class="main-page-title page-title h0">
+  {% comment %} <h1 class="main-page-title page-title h0">
     {{ page.title | escape }}
   </h1>
   <div class="rte">
     {{ page.content }}
-  </div>
+  </div> {% endcomment %}
+  <div class="settle_accounts"></div>
 </div>
+<script src="{{ 'thankyou.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {
